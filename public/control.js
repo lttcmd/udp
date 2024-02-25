@@ -1,22 +1,19 @@
-// Function to send coordinates to the server
-function sendCoordinates(x, y) {
-    fetch('http://localhost:3000/mouseposition', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ mouseX: x, mouseY: y }),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        return response.json();
-    })
-    .then(data => console.log('Data successfully sent to the server:', data))
-    .catch(error => console.error('Error sending data to the server:', error));
-}
+// Establish a WebSocket connection
+const ws = new WebSocket('ws://localhost:3000'); // Change URL to your deployed server's URL
 
+ws.onopen = function() {
+    console.log('WebSocket connection established');
+};
+
+ws.onerror = function(error) {
+    console.error('WebSocket error:', error);
+};
+
+// Updated function to send coordinates via WebSocket
+function sendCoordinates(x, y) {
+    const message = JSON.stringify({ mouseX: x, mouseY: y });
+    ws.send(message);
+}
 // Flag to track if the mouse is being dragged
 let isDragging = false;
 

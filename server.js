@@ -1,26 +1,39 @@
-const OSC = require('node-osc');
 const express = require('express');
-const bodyParser = require('body-parser');
+const http = require('http');
+const WebSocket = require('ws');
+const path = require('path');
+
 const app = express();
-const port = 3000;
+const server = http.createServer(app);
+const wss = new WebSocket.Server({ server });
 
-app.use(express.static('public'));
-app.use(bodyParser.json());
+app.use(express.static(path.join(__dirname, 'public')));
 
-const oscClient = new OSC.Client('127.0.0.1', 12345);
+wss.on('connection', (ws) => {
+    console.log('Client connected');
 
-app.post('/mouseposition', (req, res) => {
-    const { mouseX, mouseY } = req.body;
-    console.log(`Mouse X: ${mouseX}, Mouse Y: ${mouseY}`);
+    ws.on('message', (message) => {
+        // Parse the incoming message as JSON
+        const data = JSON.parse(message);
+        console.log(`Mouse X: ${data.mouseX}, Mouse Y: ${data.mouseY}`);
 
-    oscClient.send(new OSC.Message('/mouseposition', mouseX, mouseY), () => {
-        // If you need to perform an action after sending, do it here.
-        // But do not call oscClient.kill(); as it's not a valid method.
+        // Here you could forward these coordinates to wherever you need them
+        // For example, sending them to an OSC client or handling them directly
+
+        // Optionally, you can broadcast this message to other connected WebSocket clients
+        wss.clients.forEach(client => {
+            if (client !== ws && client.readyState === WebSocket.OPEN) {
+                client.send(message); // Echoes the message to other clients
+            }
+        });
     });
 
-    res.json({ status: 'Data received and forwarded' });
+    ws.on('close', () => {
+        console.log('Client disconnected');
+    });
 });
 
-app.listen(port, () => {
-    console.log(`Server listening at http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+server.listen(PORT, () => {
+    console.log(`Server started on http://localhost:${PORT}`);
 });
