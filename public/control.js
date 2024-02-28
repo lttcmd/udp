@@ -1,6 +1,7 @@
 // Establish a WebSocket connection
 const ws = new WebSocket('wss://seal-app-stzjp.ondigitalocean.app/');// Change URL to your deployed server's URL
 
+
 ws.onopen = function() {
     console.log('WebSocket connection established');
 };
@@ -36,43 +37,54 @@ document.addEventListener('mousemove', (event) => {
 
 document.addEventListener('touchmove', (event) => {
     event.preventDefault();
-    if (event.touches.length === 1) {
+    let touchCount = event.touches.length;
+    isMouseDown(touchCount === 1 || touchCount === 2 ? 1 : 0); // Call isMouseDown with 1 if 1 or 2 touches, otherwise 0
+    
+    if (touchCount === 1) {
         const touch = event.touches[0];
         const x = Math.round(touch.clientX);
         const y = Math.round(touch.clientY);
         console.log(`Touch X: ${x}, Touch Y: ${y}`);
         sendControlData({ mouseX: x, mouseY: y });
-    } else if (event.touches.length === 2) {
-        // Send the position of the first touch as mouseX and mouseY along with the pinch distance
+    } else if (touchCount === 2) {
         const touch1 = event.touches[0];
         const touch2 = event.touches[1];
+        const midpointX = Math.round((touch1.clientX + touch2.clientX) / 2);
+        const midpointY = Math.round((touch1.clientY + touch2.clientY) / 2);
         const pinchDistance = Math.round(Math.sqrt((touch2.clientX - touch1.clientX) ** 2 + (touch2.clientY - touch1.clientY) ** 2));
         console.log(`Pinch Distance: ${pinchDistance}`);
-        // Sending the position of the first touch
-        const x = Math.round(touch1.clientX);
-        const y = Math.round(touch1.clientY);
-        console.log(`Touch X: ${x}, Touch Y: ${y}`);
-        sendControlData({ mouseX: x, mouseY: y, radius: pinchDistance });
-    } else if (event.touches.length === 3) {
+        sendControlData({ mouseX: midpointX, mouseY: midpointY, radius: pinchDistance });
+    } else if (touchCount === 3) {
         const touch1 = event.touches[0];
         const touch2 = event.touches[1];
         const touch3 = event.touches[2];
-        // Calculate average X and Y coordinates for three fingers
         const avgX = Math.round((touch1.clientX + touch2.clientX + touch3.clientX) / 3);
         const avgY = Math.round((touch1.clientY + touch2.clientY + touch3.clientY) / 3);
         console.log(`Three fingers moving, avgX: ${avgX}, avgY: ${avgY}`);
-        // Send colourx and coloury exclusively for three-finger gesture
         sendControlData({ colourx: avgX, coloury: avgY });
     }
 }, { passive: false });
 
-
 document.addEventListener('touchend', (event) => {
+    if (event.touches.length === 0) {
+        isMouseDown(0); // No fingers are touching the screen
+    }
+    
     const currentTime = new Date().getTime();
     const tapLength = currentTime - lastTapTime;
-    if (tapLength < 500 && tapLength > 0 && event.touches.length < 2) { // Adjusted to ignore multi-touch scenarios
+    if (tapLength < 500 && tapLength > 0 && event.touches.length < 2) {
         console.log('Double Tap');
         sendControlData({ dtap: true });
     }
     lastTapTime = currentTime;
+});
+
+// isMouseDown function to send the touch status
+function isMouseDown(value) {
+    sendControlData({ isMouseDown: value });
+}
+
+document.addEventListener('touchstart', (event) => {
+    let touchCount = event.touches.length;
+    isMouseDown(touchCount === 1 || touchCount === 2 ? 1 : 0); // Call isMouseDown with 1 if 1 or 2 touches, otherwise 0
 });
