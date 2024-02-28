@@ -41,6 +41,13 @@ wss.on('connection', (ws) => {
 
         if (data.colourx !== undefined && data.coloury !== undefined) {
             console.log(`Colour X: ${data.colourx}, Colour Y: ${data.coloury}`);
+            // Additional handling for colour coordinates here
+        }
+
+        // Handling isMouseDown event
+        if (data.isMouseDown !== undefined) {
+            console.log(`Is Mouse Down: ${data.isMouseDown}`);
+            // Additional handling for 'isMouseDown' event here
         }
 
         // Optionally, you can broadcast this message to other connected WebSocket clients
@@ -55,8 +62,6 @@ wss.on('connection', (ws) => {
         console.log('Client disconnected');
     });
 });
-
-
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
