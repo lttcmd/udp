@@ -1,4 +1,5 @@
-const ws = new WebSocket('ws://localhost:3000'); // Change URL to your deployed server's URL
+// Establish a WebSocket connection
+const ws = new WebSocket('wss://seal-app-stzjp.ondigitalocean.app/');// Change URL to your deployed server's URL
 
 ws.onopen = function() {
     console.log('WebSocket connection established');
