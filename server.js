@@ -15,10 +15,33 @@ wss.on('connection', (ws) => {
     ws.on('message', (message) => {
         // Parse the incoming message as JSON
         const data = JSON.parse(message);
-        console.log(`Mouse X: ${data.mouseX}, Mouse Y: ${data.mouseY}`);
 
-        // Here you could forward these coordinates to wherever you need them
-        // For example, sending them to an OSC client or handling them directly
+        // Check if the message contains 'size'
+        if (data.size !== undefined) {
+            console.log(`Size: ${data.size}`);
+            // Additional handling for 'size' messages here
+        }
+
+        if (data.radius !== undefined) {
+            console.log(`Radius: ${data.radius}`);
+            // Additional handling for 'radius' here
+        }
+
+        // Check if the message contains 'mouseX' and 'mouseY'
+        if (data.mouseX !== undefined && data.mouseY !== undefined) {
+            console.log(`Mouse X: ${data.mouseX}, Mouse Y: ${data.mouseY}`);
+            // Additional handling for 'mouseX' and 'mouseY' messages here
+        }
+
+        // Handling double tap event
+        if (data.dtap !== undefined && data.dtap === true) {
+            console.log('Double Tap received');
+            // Additional handling for 'dtap' event here
+        }
+
+        if (data.colourx !== undefined && data.coloury !== undefined) {
+            console.log(`Colour X: ${data.colourx}, Colour Y: ${data.coloury}`);
+        }
 
         // Optionally, you can broadcast this message to other connected WebSocket clients
         wss.clients.forEach(client => {
@@ -32,6 +55,8 @@ wss.on('connection', (ws) => {
         console.log('Client disconnected');
     });
 });
+
+
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
