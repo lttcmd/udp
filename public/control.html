@@ -79,8 +79,8 @@
         }
         #y-label {
             top: 50%;
-            left: -60px; /* Moved to the right side */
-            transform: translateY(-50%) rotate(90deg); /* Rotate to match right-side placement */
+            left: -60px; /* Adjusted for better visibility */
+            transform: translateY(-50%) rotate(90deg);
         }
         /* Credits styling */
         .credits {
@@ -90,9 +90,15 @@
             text-align: center;
             font-family: Arial, sans-serif;
         }
+        /* Header styling */
+        h2 {
+            text-align: center;
+            margin-top: 20px; /* Added some space at the top */
+        }
     </style>
 </head>
 <body>
+    <h2>Touch Controller</h2>
     <div id="axis">
         <div id="x-axis" class="axis-line"></div>
         <div id="y-axis" class="axis-line"></div>
