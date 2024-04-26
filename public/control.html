@@ -4,8 +4,89 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mouse Tracker</title>
+    <style>
+        /* Basic styling for the axis */
+        #axis {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            height: 300px;
+            width: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .axis-line {
+            position: absolute;
+            background-color: black;
+        }
+        #x-axis {
+            width: 100%;
+            height: 2px;
+            top: 50%;
+        }
+        #y-axis {
+            height: 100%;
+            width: 2px;
+            left: 50%;
+        }
+        .axis-line::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+        }
+        #x-axis::after {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid black;
+            top: -1px;
+            right: -5px;
+        }
+        #y-axis::after {
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 5px solid black;
+            bottom: -5px;
+            left: -1px;
+        }
+        .axis-label {
+            position: absolute;
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+        }
+        #x-label {
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        #y-label {
+            top: 50%;
+            left: -110px; /* Moved to left side */
+            transform: translateY(-50%) rotate(-90deg);
+        }
+        /* Credits styling */
+        .credits {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+    </style>
 </head>
 <body>
+    <div id="axis">
+        <div id="x-axis" class="axis-line"></div>
+        <div id="y-axis" class="axis-line"></div>
+        <div id="x-label" class="axis-label">Range/Volume</div>
+        <div id="y-label" class="axis-label">Speed/Time</div>
+    </div>
+    <div class="credits">
+        Credits:<br>
+        Jesse Davis - Analysis Patch
+    </div>
     <script src="control.js"></script>
 </body>
 </html>
