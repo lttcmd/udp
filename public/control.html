@@ -31,25 +31,41 @@
             width: 2px;
             left: 50%;
         }
-        .axis-line::after {
+        /* Arrows styling using pseudo-elements */
+        .axis-line::before, .axis-line::after {
             content: '';
             position: absolute;
             width: 0;
             height: 0;
+            border-style: solid;
+        }
+        #x-axis::before {
+            border-width: 5px 5px 5px 0;
+            border-color: transparent black transparent transparent;
+            left: 0;
+            top: -5px;
+            transform: translateX(-100%);
         }
         #x-axis::after {
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-top: 5px solid black;
-            top: -1px;
-            right: -5px;
+            border-width: 5px 0 5px 5px;
+            border-color: transparent transparent transparent black;
+            right: 0;
+            top: -5px;
+            transform: translateX(100%);
+        }
+        #y-axis::before {
+            border-width: 5px 5px 0 5px;
+            border-color: black transparent transparent transparent;
+            top: 0;
+            left: -5px;
+            transform: translateY(-100%);
         }
         #y-axis::after {
-            border-left: 5px solid transparent;
-            border-right: 5px solid transparent;
-            border-bottom: 5px solid black;
-            bottom: -5px;
-            left: -1px;
+            border-width: 0 5px 5px 5px;
+            border-color: transparent transparent black transparent;
+            bottom: 0;
+            left: -5px;
+            transform: translateY(100%);
         }
         .axis-label {
             position: absolute;
@@ -63,7 +79,7 @@
         }
         #y-label {
             top: 50%;
-            left: -110px; /* Moved to left side */
+            left: -120px; /* Adjust for better visibility */
             transform: translateY(-50%) rotate(-90deg);
         }
         /* Credits styling */
