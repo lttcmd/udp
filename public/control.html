@@ -54,15 +54,15 @@
             transform: translateX(100%);
         }
         #y-axis::before {
-            border-width: 5px 5px 0 5px;
-            border-color: black transparent transparent transparent;
+            border-width: 0 5px 5px 5px;
+            border-color: transparent transparent black transparent;
             top: 0;
             left: -5px;
             transform: translateY(-100%);
         }
         #y-axis::after {
-            border-width: 0 5px 5px 5px;
-            border-color: transparent transparent black transparent;
+            border-width: 5px 5px 0 5px;
+            border-color: black transparent transparent transparent;
             bottom: 0;
             left: -5px;
             transform: translateY(100%);
@@ -79,7 +79,7 @@
         }
         #y-label {
             top: 50%;
-            left: -120px; /* Adjust for better visibility */
+            left: -150px; /* Adjusted for visibility */
             transform: translateY(-50%) rotate(-90deg);
         }
         /* Credits styling */
