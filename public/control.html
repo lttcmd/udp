@@ -79,15 +79,8 @@
         }
         #y-label {
             top: 50%;
-            left: -150px; /* Adjusted for visibility */
+            left: -250px; /* Adjusted for visibility */
             transform: translateY(-50%) rotate(-90deg);
-        }
-        /* Adjusting y-label for mobile visibility */
-        @media (max-width: 600px) {
-            #y-label {
-                left: -120px; /* Closer to axis for smaller screens */
-                font-size: 12px; /* Smaller font size for smaller screens */
-            }
         }
         /* Credits styling */
         .credits {
@@ -102,7 +95,7 @@
 <body>
     <div id="axis">
         <div id="x-axis" class="axis-line"></div>
-        <div id="y-axis" the="axis-line"></div>
+        <div id="y-axis" class="axis-line"></div>
         <div id="x-label" class="axis-label">Range/Volume</div>
         <div id="y-label" class="axis-label">Speed/Time</div>
     </div>
